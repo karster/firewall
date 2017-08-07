@@ -1,0 +1,27 @@
+{
+    "name": "karster/security",
+    "require": {
+        "longman/ip-tools": "~1.1.0"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "*",
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "karster\\security\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "karster\\security\\tests\\": "tests/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lukáš Hrdlička",
+            "email": "luk.hrdlicka@gmail.com"
+        }
+    ]
+}
