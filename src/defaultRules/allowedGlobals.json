@@ -1,1 +1,9 @@
-["_ENV", "_GET", "_POST", "_COOKIE", "_FILES", "_SERVER", "_REQUEST"]
+[
+  "_ENV",
+  "_GET",
+  "_POST",
+  "_COOKIE",
+  "_FILES",
+  "_SERVER",
+  "_REQUEST"
+]

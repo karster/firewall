@@ -17,10 +17,38 @@ class GetProtectionTest extends TestCase
         $this->getProtection = new GetProtection();
     }
 
-    public function testProtect()
+    /**
+     * @dataProvider safeDataProvider
+     */
+    public function testRunProtectionWithSafeInput($method)
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $_GET['item'] = $method;
+        $this->getProtection->setRules(['onunload', 'onblur']);
+        $result = $this->getProtection->protect();
+
+        $this->assertFalse($result);
+
+    }
+
+    public function safeDataProvider()
+    {
+        return [['bar'],['foo']];
+    }
+
+    /**
+     * @dataProvider dangerDataProvider
+     */
+    public function testRunProtectionWithDangerInput($method)
+    {
+        $_GET['item'] = $method;
+        $this->getProtection->setRules(['onunload', 'onblur']);
+        $result = $this->getProtection->protect();
+
+        $this->assertTrue($result);
+    }
+
+    public function dangerDataProvider()
+    {
+        return [['onunload="attack();"'],['onblur="void(0);']];
     }
 }

@@ -17,10 +17,38 @@ class SessionProtectionTest extends TestCase
         $this->sessionProtection = new SessionProtection();
     }
 
-    public function testProtect()
+    /**
+     * @dataProvider safeDataProvider
+     */
+    public function testRunProtectionWithSafeInput($method)
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $_SESSION['item'] = $method;
+        $this->sessionProtection->setRules(['onunload', 'onblur']);
+        $result = $this->sessionProtection->protect();
+
+        $this->assertFalse($result);
+
+    }
+
+    public function safeDataProvider()
+    {
+        return [['bar'],['foo']];
+    }
+
+    /**
+     * @dataProvider dangerDataProvider
+     */
+    public function testRunProtectionWithDangerInput($method)
+    {
+        $_SESSION['item'] = $method;
+        $this->sessionProtection->setRules(['onunload', 'onblur']);
+        $result = $this->sessionProtection->protect();
+
+        $this->assertTrue($result);
+    }
+
+    public function dangerDataProvider()
+    {
+        return [['onunload="attack();"'],['onblur="void(0);']];
     }
 }

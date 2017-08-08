@@ -17,10 +17,38 @@ class PostProtectionTest extends TestCase
         $this->postProtection = new PostProtection();
     }
 
-    public function testProtect()
+    /**
+     * @dataProvider safeDataProvider
+     */
+    public function testRunProtectionWithSafeInput($method)
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $_POST['item'] = $method;
+        $this->postProtection->setRules(['onunload', 'onblur']);
+        $result = $this->postProtection->protect();
+
+        $this->assertFalse($result);
+
+    }
+
+    public function safeDataProvider()
+    {
+        return [['bar'],['foo']];
+    }
+
+    /**
+     * @dataProvider dangerDataProvider
+     */
+    public function testRunProtectionWithDangerInput($method)
+    {
+        $_POST['item'] = $method;
+        $this->postProtection->setRules(['onunload', 'onblur']);
+        $result = $this->postProtection->protect();
+
+        $this->assertTrue($result);
+    }
+
+    public function dangerDataProvider()
+    {
+        return [['onunload="attack();"'],['onblur="void(0);']];
     }
 }

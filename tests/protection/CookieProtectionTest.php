@@ -17,10 +17,38 @@ class CookieProtectionTest extends TestCase
         $this->cookieProtection = new CookieProtection();
     }
 
-    public function testProtect()
+    /**
+     * @dataProvider safeDataProvider
+     */
+    public function testRunProtectionWithSafeInput($method)
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $_COOKIE['item'] = $method;
+        $this->cookieProtection->setRules(['onunload', 'onblur']);
+        $result = $this->cookieProtection->protect();
+
+        $this->assertFalse($result);
+
+    }
+
+    public function safeDataProvider()
+    {
+        return [['bar'],['foo']];
+    }
+
+    /**
+     * @dataProvider dangerDataProvider
+     */
+    public function testRunProtectionWithDangerInput($method)
+    {
+        $_COOKIE['item'] = $method;
+        $this->cookieProtection->setRules(['onunload', 'onblur']);
+        $result = $this->cookieProtection->protect();
+
+        $this->assertTrue($result);
+    }
+
+    public function dangerDataProvider()
+    {
+        return [['onunload="attack();"'],['onblur="void(0);']];
     }
 }
