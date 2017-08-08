@@ -12,6 +12,7 @@ class AllowedGlobals extends Rule implements RuleInterface
     public function setRules($rules)
     {
         if (!empty($rules) && is_array($rules)) {
+            $rules = array_merge($rules, ['GLOBALS']);
             foreach ($rules as $rule) {
                 $this->rules[] = strtoupper($rule);
             }

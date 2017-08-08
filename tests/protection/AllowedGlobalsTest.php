@@ -35,7 +35,7 @@ class AllowedGlobalsTest extends TestCase
         return [
             [
                 ['_post', '_session', '_Get'],
-                ['_POST', '_SESSION', '_GET']
+                ['_POST', '_SESSION', '_GET', 'GLOBALS']
             ]
         ];
     }
@@ -47,7 +47,7 @@ class AllowedGlobalsTest extends TestCase
     {
         $_POST['title'] = $method;
         $_GET['password'] = $method;
-        $this->allowedGlobals->setRules(['_GET', '_POST', 'GLOBALS']);
+        $this->allowedGlobals->setRules(['_GET', '_POST']);
         $this->allowedGlobals->protect();
 
         $this->assertArrayHasKey('_GET', $GLOBALS);
@@ -66,7 +66,7 @@ class AllowedGlobalsTest extends TestCase
     {
         $_SERVER['title'] = $method;
         $_ENV['password'] = $method;
-        $this->allowedGlobals->setRules(['_GET', '_POST', 'GLOBALS']);
+        $this->allowedGlobals->setRules(['_GET', '_POST']);
         $result = $this->allowedGlobals->protect();
 
         $this->assertArrayNotHasKey('_SERVER', $GLOBALS);
