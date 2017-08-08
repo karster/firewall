@@ -24,7 +24,7 @@ class Rule
      * @param $variable_name
      * @return bool|string
      */
-    protected function getGlobalVariable($variable_name)
+    private function getGlobalVariable($variable_name)
     {
         if (isset($_SERVER[$variable_name])) {
             return strip_tags($_SERVER[$variable_name]);
@@ -59,4 +59,61 @@ class Rule
 
         return $this;
     }
+
+    protected function loadRulesFromFile($file)
+    {
+        return json_decode(file_get_contents($file), true);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getQueryString()
+    {
+        return strtolower(str_replace('%09', '%20', $this->getGlobalVariable('QUERY_STRING')));
+    }
+
+    /**
+     * @return bool|string
+     */
+    protected function getReferer()
+    {
+        $referer = $this->getGlobalVariable('HTTP_REFERER');
+
+        return !empty($referer) ? $referer : false;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getIp()
+    {
+        $indices = ['HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'REMOTE_ADDR'];
+
+        foreach ($indices as $index) {
+            $ip = $this->getGlobalVariable($index);
+            if (!empty($ip)) {
+                return $ip;
+            }
+        }
+    }
+
+    /**
+     * @return string
+     */
+    protected function getUserAgent()
+    {
+        $user_agent = $this->getGlobalVariable('HTTP_USER_AGENT');
+
+        return !empty($user_agent) ? $user_agent : false;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRequestMethod()
+    {
+        return strtoupper($this->getGlobalVariable('REQUEST_METHOD'));
+    }
+
 }

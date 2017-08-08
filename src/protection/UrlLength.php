@@ -16,11 +16,6 @@ class UrlLength extends Rule implements RuleInterface
         return $this;
     }
 
-    private function getQueryString()
-    {
-        return strtolower(str_replace('%09', '%20', $this->getGlobalVariable('QUERY_STRING')));
-    }
-
     /**
      * @inheritdoc
      */

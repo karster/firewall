@@ -20,11 +20,6 @@ class AllowedRequestMethod extends Rule implements RuleInterface
         return $this;
     }
 
-    private function getRequestMethod()
-    {
-        return strtoupper($this->getGlobalVariable('REQUEST_METHOD'));
-    }
-
     /**
      * @inheritdoc
      */
