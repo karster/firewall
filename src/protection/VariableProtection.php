@@ -3,7 +3,7 @@
 namespace karster\security\protection;
 
 
-class VariableProtection extends Rule
+class VariableProtection extends Protection
 {
     protected function checkVariables($variable)
     {

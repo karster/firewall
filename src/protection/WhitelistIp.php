@@ -4,11 +4,11 @@ namespace karster\security\protection;
 
 use Longman\IPTools\Ip;
 
-class WhitelistIp extends Rule implements RuleInterface
+class WhitelistIp extends Protection implements ProtectionInterface
 {
     public function protect()
     {
-        $ip = $this->getIp();
+        $ip = $this->globalVariable->getIp();
         $rules = $this->getRules();
 
         if (!empty($ip) && !empty($rules)) {

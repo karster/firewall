@@ -1,24 +1,13 @@
 <?php
 
-namespace karster\security\protection;
+namespace karster\security;
 
-
-class Rule
+/**
+ * Class GlobalVariable
+ * @package karster\security
+ */
+class GlobalVariable
 {
-    /**
-     * @var mixed
-     */
-    protected $rules;
-
-    /**
-     * Rule constructor.
-     * @param array $rules
-     */
-    public function __construct($rules = [])
-    {
-        $this->setRules($rules);
-    }
-
     /**
      * @access protected
      * @param $variable_name
@@ -46,29 +35,9 @@ class Rule
     }
 
     /**
-     * @return mixed
-     */
-    public function getRules()
-    {
-        return $this->rules;
-    }
-
-    public function setRules($rules)
-    {
-        $this->rules = $rules;
-
-        return $this;
-    }
-
-    protected function loadRulesFromFile($file)
-    {
-        return json_decode(file_get_contents($file), true);
-    }
-
-    /**
      * @return string
      */
-    protected function getQueryString()
+    public function getQueryString()
     {
         return strtolower(str_replace('%09', '%20', $this->getGlobalVariable('QUERY_STRING')));
     }
@@ -76,7 +45,7 @@ class Rule
     /**
      * @return bool|string
      */
-    protected function getReferer()
+    public function getReferer()
     {
         $referer = $this->getGlobalVariable('HTTP_REFERER');
 
@@ -86,7 +55,7 @@ class Rule
     /**
      * @return string
      */
-    protected function getIp()
+    public function getIp()
     {
         $indices = ['HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'REMOTE_ADDR'];
 
@@ -101,7 +70,7 @@ class Rule
     /**
      * @return string
      */
-    protected function getUserAgent()
+    public function getUserAgent()
     {
         $user_agent = $this->getGlobalVariable('HTTP_USER_AGENT');
 
@@ -111,9 +80,19 @@ class Rule
     /**
      * @return string
      */
-    protected function getRequestMethod()
+    public function getRequestMethod()
     {
         return strtoupper($this->getGlobalVariable('REQUEST_METHOD'));
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestUri()
+    {
+        $request_uri = $this->getGlobalVariable('REQUEST_URI');
+
+        return !empty($request_uri) ? $request_uri : false;
     }
 
 }

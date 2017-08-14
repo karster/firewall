@@ -3,7 +3,7 @@
 namespace karster\security\protection;
 
 
-class UrlProtection extends Rule implements RuleInterface
+class UrlProtection extends Protection implements ProtectionInterface
 {
     /**
      * @param array $rules
@@ -27,7 +27,7 @@ class UrlProtection extends Rule implements RuleInterface
     public function protect()
     {
         $runProtection = false;
-        $query_string = $this->getQueryString();
+        $query_string = $this->globalVariable->getQueryString();
 
         if (!empty($query_string)) {
             $rules = $this->getRules();

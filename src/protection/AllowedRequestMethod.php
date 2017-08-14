@@ -3,7 +3,7 @@
 namespace karster\security\protection;
 
 
-class AllowedRequestMethod extends Rule implements RuleInterface
+class AllowedRequestMethod extends Protection implements ProtectionInterface
 {
     /**
      * @param array $rules
@@ -27,7 +27,7 @@ class AllowedRequestMethod extends Rule implements RuleInterface
     {
         $runProtection = false;
         $rules = $this->getRules();
-        $method = $this->getRequestMethod();
+        $method = $this->globalVariable->getRequestMethod();
 
         if (!in_array($method, $rules)) {
             $runProtection = true;

@@ -3,7 +3,7 @@
 namespace karster\security\protection;
 
 
-interface RuleInterface
+interface ProtectionInterface
 {
     /**
      * @access public

@@ -3,7 +3,7 @@
 namespace karster\security\protection;
 
 
-class UrlLength extends Rule implements RuleInterface
+class UrlLength extends Protection implements ProtectionInterface
 {
     /**
      * @param integer $rules
@@ -23,7 +23,7 @@ class UrlLength extends Rule implements RuleInterface
     {
         $runProtection = false;
         $rules = $this->getRules();
-        $query_string = $this->getQueryString();
+        $query_string = $this->globalVariable->getQueryString();
 
         if (mb_strlen($query_string) > $rules) {
             $runProtection = true;
