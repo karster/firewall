@@ -106,6 +106,7 @@ final class Firewall
             if (!$this->forceProtect()) {
                 foreach ($this->protection as $protection_name => $protection) {
                     if ($protection_name != static::WHITELIST_IP_PROTECTION && $protection->protect()) {
+                        $this->appendAttackerIp();
                         $this->createLog($protection_name);
                         $this->throwAlert($protection_name);
                     }
@@ -171,10 +172,11 @@ final class Firewall
 
         return $result;
     }
-
-    private function appendAttackerIp($ip)
+    
+    private function appendAttackerIp()
     {
         if (!empty($this->logDirectory) && file_exists($this->logDirectory)) {
+            $ip = $this->getIp();
             $attackers_ip = json_decode(file_get_contents($this->logDirectory . "/" . static::ATTACKER_IP_FILE), true);
             if (isset($attackers_ip[$ip])) {
                 $attackers_ip[$ip]++;
@@ -215,8 +217,6 @@ final class Firewall
             "URL: " . $this->getRequestUri(),
             "Referer: " . $this->getReferer()
         ];
-
-        $this->appendAttackerIp($this->getIp());
 
         return implode(' | ', $message);
     }
