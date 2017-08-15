@@ -3,7 +3,7 @@
 namespace karster\security;
 
 /**
- * Class GlobalVariable
+ * Class GlobalVariableTrait
  * @package karster\security
  */
 trait GlobalVariableTrait
@@ -63,6 +63,8 @@ trait GlobalVariableTrait
                 return $ip;
             }
         }
+
+        return false;
     }
 
     /**
