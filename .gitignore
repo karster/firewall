@@ -14,7 +14,9 @@ Thumbs.db
 
 # Mac DS_Store Files
 .DS_Store
-
+.php_cs.cache
 vendor
 
 index.php
+
+firewall_logs

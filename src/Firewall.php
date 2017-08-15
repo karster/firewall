@@ -2,6 +2,7 @@
 
 namespace karster\security;
 
+use karster\security\protection\BlacklistIp;
 use karster\security\protection\Protection;
 
 final class Firewall
@@ -103,13 +104,15 @@ final class Firewall
             if (!$this->forceProtect()) {
                 foreach ($this->protection as $protection_name => $protection) {
                     if ($protection_name != static::WHITELIST_IP_PROTECTION && $protection->protect()) {
-                        $this->throwAlert($protection_name);
                         $this->createLog($protection_name);
+                        $this->throwAlert($protection_name);
+                        exit();
                     }
                 }
             } else {
-                $this->throwAlert(static::BLACKLIST_IP_PROTECTION);
                 $this->createLog(static::BLACKLIST_IP_PROTECTION);
+                $this->throwAlert(static::BLACKLIST_IP_PROTECTION);
+                exit();
             }
         }
     }
@@ -136,7 +139,15 @@ final class Firewall
         $attackers_ip = $this->getAttackerIp();
 
         if (isset($this->protection[static::BLACKLIST_IP_PROTECTION])) {
+            $rules = $this->protection[static::BLACKLIST_IP_PROTECTION]->getRules();
+            $rules = array_merge($rules, $attackers_ip);
+            $this->protection[static::BLACKLIST_IP_PROTECTION]->setRules($rules);
             $force_protection = $this->protection[static::BLACKLIST_IP_PROTECTION]->protect();
+        }
+
+        if (!empty($attackers_ip)) {
+            $ip_protection = new BlacklistIp($attackers_ip);
+            $force_protection = $ip_protection->protect();
         }
 
         return $force_protection;
@@ -148,24 +159,29 @@ final class Firewall
     private function getAttackerIp()
     {
         $result = [];
-        if ($this->allowAttackCount > 0 && !empty($this->logDirectory) ) {
-            if (!file_exists($this->logDirectory . "/" . static::ATTACKER_IP_FILE)) {
-                $attackers_ip = json_encode(file_get_contents($this->logDirectory . "/" . static::ATTACKER_IP_FILE), true);
-                $result = array_filter($attackers_ip, function ($value) {
-                    return ($value >= $this->allowAttackCount);
-                });
-            }
+        if ($this->allowAttackCount > 0 && !empty($this->logDirectory) && file_exists($this->logDirectory . "/" . static::ATTACKER_IP_FILE)) {
+            $attackers_ip = json_decode(file_get_contents($this->logDirectory . "/" . static::ATTACKER_IP_FILE), true);
+            $result = array_filter($attackers_ip, function ($value) {
+                return ($value >= $this->allowAttackCount);
+            });
+
+            $result = array_keys($result);
         }
 
         return $result;
     }
 
-    private function appendAttackerIp()
+    private function appendAttackerIp($ip)
     {
-        if ($this->logDirectory) {
-            if (!file_exists($this->logDirectory . "/" . static::ATTACKER_IP_FILE)) {
-                $attackers_ip = json_encode(file_get_contents($this->logDirectory . "/" . static::ATTACKER_IP_FILE), true);
+        if (!empty($this->logDirectory) && file_exists($this->logDirectory)) {
+            $attackers_ip = json_decode(file_get_contents($this->logDirectory . "/" . static::ATTACKER_IP_FILE), true);
+            if (isset($attackers_ip[$ip])) {
+                $attackers_ip[$ip]++;
+            } else {
+                $attackers_ip[$ip] = 1;
             }
+
+            file_put_contents($this->logDirectory . "/" . static::ATTACKER_IP_FILE, json_encode($attackers_ip));
         }
     }
 
@@ -198,6 +214,8 @@ final class Firewall
             "URL: " . $global_variable->getRequestUri(),
             "Referer: " . $global_variable->getReferer()
         ];
+
+        $this->appendAttackerIp($global_variable->getIp());
 
         return implode(' | ', $message);
     }

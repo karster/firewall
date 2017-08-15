@@ -2,7 +2,6 @@
 
 namespace karster\security\protection;
 
-
 class UrlProtection extends Protection implements ProtectionInterface
 {
     /**

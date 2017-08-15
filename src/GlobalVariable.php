@@ -94,5 +94,4 @@ class GlobalVariable
 
         return !empty($request_uri) ? $request_uri : false;
     }
-
 }

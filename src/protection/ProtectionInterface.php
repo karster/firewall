@@ -2,7 +2,6 @@
 
 namespace karster\security\protection;
 
-
 interface ProtectionInterface
 {
     /**

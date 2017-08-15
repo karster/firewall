@@ -2,7 +2,6 @@
 
 namespace karster\security\protection;
 
-
 class AllowedGlobals extends Protection implements ProtectionInterface
 {
     /**
