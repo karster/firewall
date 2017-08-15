@@ -172,7 +172,7 @@ final class Firewall
 
         return $result;
     }
-    
+
     private function appendAttackerIp()
     {
         if (!empty($this->logDirectory) && file_exists($this->logDirectory)) {
