@@ -47,9 +47,7 @@ class GlobalVariable
      */
     public function getReferer()
     {
-        $referer = $this->getGlobalVariable('HTTP_REFERER');
-
-        return !empty($referer) ? $referer : false;
+        return $this->getGlobalVariable('HTTP_REFERER');
     }
 
     /**
@@ -72,9 +70,7 @@ class GlobalVariable
      */
     public function getUserAgent()
     {
-        $user_agent = $this->getGlobalVariable('HTTP_USER_AGENT');
-
-        return !empty($user_agent) ? $user_agent : false;
+        return $this->getGlobalVariable('HTTP_USER_AGENT');
     }
 
     /**
@@ -90,8 +86,6 @@ class GlobalVariable
      */
     public function getRequestUri()
     {
-        $request_uri = $this->getGlobalVariable('REQUEST_URI');
-
-        return !empty($request_uri) ? $request_uri : false;
+        return $this->getGlobalVariable('REQUEST_URI');
     }
 }
