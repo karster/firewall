@@ -7,6 +7,8 @@ use karster\security\protection\Protection;
 
 final class Firewall
 {
+    use GlobalVariableTrait;
+
     const WHITELIST_IP_PROTECTION = 'whitelistIp';
 
     const BLACKLIST_IP_PROTECTION = 'blacklistIp';
@@ -106,13 +108,11 @@ final class Firewall
                     if ($protection_name != static::WHITELIST_IP_PROTECTION && $protection->protect()) {
                         $this->createLog($protection_name);
                         $this->throwAlert($protection_name);
-                        exit();
                     }
                 }
             } else {
                 $this->createLog(static::BLACKLIST_IP_PROTECTION);
                 $this->throwAlert(static::BLACKLIST_IP_PROTECTION);
-                exit();
             }
         }
     }
@@ -136,7 +136,7 @@ final class Firewall
     private function forceProtect()
     {
         $force_protection = false;
-        $attackers_ip = $this->getAttackerIp();
+        $attackers_ip = $this->getAttackerIpList();
 
         if (isset($this->protection[static::BLACKLIST_IP_PROTECTION])) {
             $rules = $this->protection[static::BLACKLIST_IP_PROTECTION]->getRules();
@@ -156,9 +156,10 @@ final class Firewall
     /**
      * @return array
      */
-    private function getAttackerIp()
+    private function getAttackerIpList()
     {
         $result = [];
+
         if ($this->allowAttackCount > 0 && !empty($this->logDirectory) && file_exists($this->logDirectory . "/" . static::ATTACKER_IP_FILE)) {
             $attackers_ip = json_decode(file_get_contents($this->logDirectory . "/" . static::ATTACKER_IP_FILE), true);
             $result = array_filter($attackers_ip, function ($value) {
@@ -188,6 +189,7 @@ final class Firewall
     public function throwAlert($protection_name)
     {
         echo $protection_name . "<br />";
+        exit();
     }
 
     private function createLog($protection_name)
@@ -204,18 +206,17 @@ final class Firewall
 
     private function createMessage($protection_name)
     {
-        $global_variable = new GlobalVariable();
         $message = [
             date('j-m-Y H:i:s'),
             $protection_name,
-            "IP: " . $global_variable->getIp(),
-            "DNS: " . gethostbyaddr($global_variable->getIp()),
-            "User Agent: " . $global_variable->getUserAgent(),
-            "URL: " . $global_variable->getRequestUri(),
-            "Referer: " . $global_variable->getReferer()
+            "IP: " . $this->getIp(),
+            "DNS: " . gethostbyaddr($this->getIp()),
+            "User Agent: " . $this->getUserAgent(),
+            "URL: " . $this->getRequestUri(),
+            "Referer: " . $this->getReferer()
         ];
 
-        $this->appendAttackerIp($global_variable->getIp());
+        $this->appendAttackerIp($this->getIp());
 
         return implode(' | ', $message);
     }

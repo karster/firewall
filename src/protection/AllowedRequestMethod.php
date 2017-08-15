@@ -26,7 +26,7 @@ class AllowedRequestMethod extends Protection implements ProtectionInterface
     {
         $runProtection = false;
         $rules = $this->getRules();
-        $method = $this->globalVariable->getRequestMethod();
+        $method = $this->getRequestMethod();
 
         if (!in_array($method, $rules)) {
             $runProtection = true;

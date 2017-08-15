@@ -22,7 +22,7 @@ class UrlLength extends Protection implements ProtectionInterface
     {
         $runProtection = false;
         $rules = $this->getRules();
-        $query_string = $this->globalVariable->getQueryString();
+        $query_string = $this->getQueryString();
 
         if (mb_strlen($query_string) > $rules) {
             $runProtection = true;

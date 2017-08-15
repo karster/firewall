@@ -2,19 +2,15 @@
 
 namespace karster\security\protection;
 
-use karster\security\GlobalVariable;
+use karster\security\GlobalVariableTrait;
 
 class Protection
 {
+    use GlobalVariableTrait;
     /**
      * @var mixed
      */
     protected $rules;
-
-    /**
-     * @var GlobalVariable
-     */
-    public $globalVariable;
 
     /**
      * Protection constructor.
@@ -23,7 +19,6 @@ class Protection
     public function __construct($rules = [])
     {
         $this->setRules($rules);
-        $this->globalVariable = new GlobalVariable();
     }
 
     /**

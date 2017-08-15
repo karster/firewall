@@ -26,7 +26,7 @@ class UrlProtection extends Protection implements ProtectionInterface
     public function protect()
     {
         $runProtection = false;
-        $query_string = $this->globalVariable->getQueryString();
+        $query_string = $this->getQueryString();
 
         if (!empty($query_string)) {
             $rules = $this->getRules();

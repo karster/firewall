@@ -6,7 +6,7 @@ namespace karster\security;
  * Class GlobalVariable
  * @package karster\security
  */
-class GlobalVariable
+trait GlobalVariableTrait
 {
     /**
      * @access protected

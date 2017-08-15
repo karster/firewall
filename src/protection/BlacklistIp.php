@@ -8,7 +8,7 @@ class BlacklistIp extends Protection implements ProtectionInterface
 {
     public function protect()
     {
-        $ip = $this->globalVariable->getIp();
+        $ip = $this->getIp();
         $rules = $this->getRules();
 
         if (!empty($ip) && !empty($rules)) {
