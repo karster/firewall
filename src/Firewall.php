@@ -190,7 +190,20 @@ final class Firewall
 
     public function throwAlert($protection_name)
     {
-        echo $protection_name . "<br />";
+        echo '
+            <html>
+                <head>
+                    <meta charset="UTF-8" />
+                    <title>I\'m detecting an attack on system!</title>
+                </head>
+                <body style="background-color:#D64541">
+                    <h1 style="width:80%;margin:80px auto;color:#fff;text-align:center;">
+                        I\'m detecting an attack on system!<br /><br />
+                        Vaša IP adresa '.$this->getIp().' spolu s ostatnými údajmi boli zaznamenané a odoslané Vášmu poskytovateľovi internetového pripojenia.<br />
+                    </h1>
+                </body>
+            </html>';
+
         exit();
     }
 
