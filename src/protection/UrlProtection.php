@@ -27,26 +27,14 @@ class UrlProtection extends Protection implements ProtectionInterface
     {
         $runProtection = false;
         $query_string = $this->getQueryString();
+        $rules = $this->getRules();
 
-        if (!empty($query_string)) {
-            $rules = $this->getRules();
-            $count = 0;
-            str_replace($rules, '*', $query_string, $count);
-
-            if ($count > 0) {
-                $runProtection = true;
-            }
-
-            if (preg_match('#\w?\s?union\s\w*?\s?(select|all|distinct|insert|update|drop|delete)#is', $query_string)) {
-                $runProtection = true;
-            }
-
-            if (preg_match('/([OdWo5NIbpuU4V2iJT0n]{5}) /', rawurldecode($query_string))) {
-                $runProtection = true;
-            }
-
-            if (strstr(rawurldecode($query_string), '*')) {
-                $runProtection = true;
+        if (!empty($query_string) && !empty($rules)) {
+            foreach ($rules as $rule) {
+                if (preg_match("/$rule/", rawurldecode($query_string))) {
+                    $runProtection = true;
+                    break;
+                }
             }
         }
 

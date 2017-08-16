@@ -7,14 +7,14 @@ class VariableProtection extends Protection
     protected function checkVariables($variable)
     {
         $runProtection = false;
-        if (!empty($variable)) {
-            $rules = $this->getRules();
+        $rules = $this->getRules();
+        if (!empty($variable) && !empty($rules)) {
             foreach ($variable as &$value) {
-                $count = 0;
-                str_replace($rules, '*', $value, $count);
-                if ($count > 0) {
-                    unset($value);
-                    $runProtection = true;
+                foreach ($rules as $rule) {
+                    if (preg_match("/$rule/", $value)) {
+                        $runProtection = true;
+                        break;
+                    }
                 }
             }
         }
