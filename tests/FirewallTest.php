@@ -18,36 +18,23 @@ class FirewallTest extends TestCase
 
     public function testCreateProtectionConfig()
     {
-        $config = [
-            'protection' => [
-                'allowedRequestMethod' => [
-                    'active' => false,
-                    'rules' => ['GET', 'POST']
-                ],
-                'urlLength' => [
-                    'active' => true,
-                    'rules' => 200
-                ]
+        $protection = [
+            'allowedRequestMethod' => [
+                'active' => false,
+                'rules' => ['GET', 'POST']
+            ],
+            'urlLength' => [
+                'active' => true,
+                'rules' => 200
             ]
         ];
 
-        $result = $this->invokeMethod($this->firewall, 'createProtectionConfig', [$config]);
+        $result = $this->invokeMethod($this->firewall, 'createProtectionConfig', [$protection]);
 
         $this->assertNotEmpty($result);
         $this->assertArrayHasKey('urlLength', $result);
-        $this->assertArrayNotHasKey('allowedRequestMethod', $result);
+        $this->assertArrayHasKey('allowedRequestMethod', $result);
         $this->assertInstanceOf('karster\security\protection\UrlLength', $result['urlLength']);
-    }
-
-    public function testIsProtectionActive()
-    {
-        $config['active'] = true;
-        $result = $this->invokeMethod($this->firewall, 'isProtectionActive', [$config]);
-        $this->assertTrue($result);
-
-        $config['active'] = false;
-        $result = $this->invokeMethod($this->firewall, 'isProtectionActive', [$config]);
-        $this->assertFalse($result);
     }
 
     public function testGetRules()
@@ -62,10 +49,10 @@ class FirewallTest extends TestCase
 
     public function testLoadDefaultRules()
     {
-        $result = $this->invokeMethod($this->firewall, 'loadDefaultRules', ['urlLength']);
+        $result = $this->invokeMethod($this->firewall, 'loadRulesFromFile', [__DIR__ . '/../src/defaultRules/urlLength.json']);
         $this->assertSame(300, $result);
 
-        $result = $this->invokeMethod($this->firewall, 'loadDefaultRules', ['foo']);
+        $result = $this->invokeMethod($this->firewall, 'loadRulesFromFile', ['foo']);
         $this->assertEmpty($result);
     }
 
