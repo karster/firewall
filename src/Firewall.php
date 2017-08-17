@@ -38,6 +38,11 @@ final class Firewall
     private $active = true;
 
     /**
+     * @var string
+     */
+    private $messageTemplate = 'I\'m detecting an attack on system!<br /><br />Your IP address {IP} with other data have been recorded and sent to your ISP.';
+
+    /**
      * Firewall constructor.
      * @param array $config
      */
@@ -81,18 +86,20 @@ final class Firewall
 
     private function getRules($config, $protection)
     {
-        if (isset($config['rules'])) {
+        if (!empty($config['rules'])) {
             return $config['rules'];
         }
 
-        return $this->loadDefaultRules($protection);
+        if (!empty($config['rulesFile'])) {
+            return $this->loadRulesFromFile($config['rulesFile']);
+        }
+
+        return $this->loadRulesFromFile(__DIR__ . '/defaultRules/' . lcfirst($protection) . '.json');
     }
 
-    private function loadDefaultRules($protection)
+    private function loadRulesFromFile($file)
     {
         $rules = [];
-        $file = __DIR__ . '/defaultRules/' . lcfirst($protection) . '.json';
-
         if (file_exists($file)) {
             $rules = json_decode(file_get_contents($file), true);
         }
@@ -108,12 +115,12 @@ final class Firewall
                     if ($protection_name != static::WHITELIST_IP_PROTECTION && $protection->protect()) {
                         $this->appendAttackerIp();
                         $this->createLog($protection_name);
-                        $this->throwAlert($protection_name);
+                        $this->throwAlert();
                     }
                 }
             } else {
                 $this->createLog(static::BLACKLIST_IP_PROTECTION);
-                $this->throwAlert(static::BLACKLIST_IP_PROTECTION);
+                $this->throwAlert();
             }
         }
     }
@@ -188,23 +195,32 @@ final class Firewall
         }
     }
 
-    public function throwAlert($protection_name)
+    public function throwAlert()
     {
         echo '
             <html>
                 <head>
                     <meta charset="UTF-8" />
-                    <title>I\'m detecting an attack on system!</title>
+                    <title>Firewall</title>
                 </head>
                 <body style="background-color:#D64541">
                     <h1 style="width:80%;margin:80px auto;color:#fff;text-align:center;">
-                        I\'m detecting an attack on system!<br /><br />
-                        Vaša IP adresa '.$this->getIp().' spolu s ostatnými údajmi boli zaznamenané a odoslané Vášmu poskytovateľovi internetového pripojenia.<br />
+                        '.$this->getMessage().'
                     </h1>
                 </body>
             </html>';
 
         exit();
+    }
+
+    private function getMessage()
+    {
+        $variables = [
+            '{IP}' => $this->getIp(),
+            '{USER_AGENT}' => $this->getUserAgent()
+        ];
+
+        return str_replace(array_keys($variables), array_values($variables), $this->messageTemplate);
     }
 
     private function createLog($protection_name)
