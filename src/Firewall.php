@@ -61,15 +61,65 @@ final class Firewall
         }
 
         if (isset($config['protection']) && $this->active) {
-            $this->protection = $this->createProtectionConfig($config);
+            $this->protection = $this->createProtectionConfig($config['protection']);
         }
     }
 
-    private function createProtectionConfig($config)
+    /**
+     * @param $attack_count
+     * @return $this
+     */
+    public function setAllowAttackCount($attack_count)
+    {
+        $this->allowAttackCount = intval($attack_count);
+
+        return $this;
+    }
+
+    /**
+     * @param $active
+     * @return $this
+     */
+    public function setActive($active)
+    {
+        $this->active = boolval($active);
+
+        return $this;
+    }
+
+    /**
+     * @param $directory
+     * @return $this
+     */
+    public function setLogDirectory($directory)
+    {
+        $this->logDirectory = $directory;
+
+        return $this;
+    }
+
+    /**
+     * @param $protection
+     * @return $this
+     */
+    public function setProtection($protection)
+    {
+        if ($this->active) {
+            $this->protection = $this->createProtectionConfig($protection);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $protection
+     * @return array
+     */
+    private function createProtectionConfig($protection)
     {
         $result = [];
-        foreach ($config['protection'] as $protectionName => $config) {
-            if ($this->isProtectionActive($config)) {
+        foreach ($protection as $protectionName => $config) {
+            if ($this->active) {
                 $rules = $this->getRules($config, $protectionName);
                 $class = 'karster\security\protection\\' . ucfirst($protectionName);
                 $result[$protectionName] = new $class($rules);
@@ -79,11 +129,11 @@ final class Firewall
         return $result;
     }
 
-    private function isProtectionActive($config)
-    {
-        return isset($config['active']) && boolval($config['active']);
-    }
-
+    /**
+     * @param $config
+     * @param $protection
+     * @return array|mixed
+     */
     private function getRules($config, $protection)
     {
         if (!empty($config['rules'])) {
@@ -97,6 +147,12 @@ final class Firewall
         return $this->loadRulesFromFile(__DIR__ . '/defaultRules/' . lcfirst($protection) . '.json');
     }
 
+    /**
+     * @param $file
+     * @param bool $default_rule
+     * @return array
+     * @throws \Exception
+     */
     private function loadRulesFromFile($file, $default_rule = true)
     {
         $rules = [];
@@ -111,7 +167,7 @@ final class Firewall
 
     public function run()
     {
-        if (!empty($this->protection) && !$this->canSkipProtection() && $this->active) {
+        if ($this->active && !empty($this->protection) && !$this->canSkipProtection()) {
             if (!$this->forceProtect()) {
                 foreach ($this->protection as $protection_name => $protection) {
                     if ($protection_name != static::WHITELIST_IP_PROTECTION && $protection->protect()) {
@@ -219,12 +275,17 @@ final class Firewall
     {
         $variables = [
             '{IP}' => $this->getIp(),
-            '{USER_AGENT}' => $this->getUserAgent()
+            '{USER_AGENT}' => $this->getUserAgent(),
+            '{DNS}' => gethostbyaddr($this->getIp()),
+            'REFERER' => $this->getReferer()
         ];
 
         return str_replace(array_keys($variables), array_values($variables), $this->messageTemplate);
     }
 
+    /**
+     * @param $protection_name
+     */
     private function createLog($protection_name)
     {
         if (!empty($this->logDirectory)) {
@@ -237,6 +298,10 @@ final class Firewall
         }
     }
 
+    /**
+     * @param $protection_name
+     * @return string
+     */
     private function createMessage($protection_name)
     {
         $message = [
