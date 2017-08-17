@@ -91,17 +91,19 @@ final class Firewall
         }
 
         if (!empty($config['rulesFile'])) {
-            return $this->loadRulesFromFile($config['rulesFile']);
+            return $this->loadRulesFromFile($config['rulesFile'], false);
         }
 
         return $this->loadRulesFromFile(__DIR__ . '/defaultRules/' . lcfirst($protection) . '.json');
     }
 
-    private function loadRulesFromFile($file)
+    private function loadRulesFromFile($file, $default_rule = true)
     {
         $rules = [];
         if (file_exists($file)) {
             $rules = json_decode(file_get_contents($file), true);
+        } elseif (!$default_rule) {
+            throw new \Exception('File not found');
         }
 
         return $rules;
@@ -205,7 +207,7 @@ final class Firewall
                 </head>
                 <body style="background-color:#D64541">
                     <h1 style="width:80%;margin:80px auto;color:#fff;text-align:center;">
-                        '.$this->getMessage().'
+                        ' . $this->getMessage() . '
                     </h1>
                 </body>
             </html>';
