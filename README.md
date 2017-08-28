@@ -1,5 +1,6 @@
 # Firewall
 
+[![Build Status](https://travis-ci.org/karster/firewall.svg?branch=master)][travis]
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 
 > Simple firewall to protect your web application against many attacks
@@ -157,5 +158,6 @@ Have an idea? Found a bug? See [how to contribute][contributing].
 MIT see [LICENSE][] for the full license text.
 
 
+[travis]: https://travis-ci.org/karster/firewall
 [license]: LICENSE.md
 [contributing]: CONTRIBUTING.md
