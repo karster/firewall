@@ -282,7 +282,7 @@ final class Firewall
             '{IP}' => $this->getIp(),
             '{USER_AGENT}' => $this->getUserAgent(),
             '{DNS}' => gethostbyaddr($this->getIp()),
-            'REFERER' => $this->getReferer()
+            '{REFERER}' => $this->getReferer()
         ];
 
         return str_replace(array_keys($variables), array_values($variables), $this->messageTemplate);
