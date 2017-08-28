@@ -216,7 +216,7 @@ final class Firewall
             $force_protection = $this->protection[static::BLACKLIST_IP_PROTECTION]->protect();
         }
 
-        if (!empty($attackers_ip)) {
+        if (!empty($attackers_ip) && !$force_protection) {
             $ip_protection = new BlacklistIp($attackers_ip);
             $force_protection = $ip_protection->protect();
         }
