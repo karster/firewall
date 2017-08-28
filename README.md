@@ -1,6 +1,7 @@
 # Firewall
 
 [![Build Status](https://travis-ci.org/karster/firewall.svg?branch=master)][travis]
+[![Latest Stable Version](https://poser.pugx.org/karster/security/v/stable)][version]
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)][license]
 
 > Simple firewall to protect your web application against many attacks
@@ -157,7 +158,7 @@ Have an idea? Found a bug? See [how to contribute][contributing].
 ## License
 MIT see [LICENSE][] for the full license text.
 
-
+[version]: https://packagist.org/packages/karster/security
 [travis]: https://travis-ci.org/karster/firewall
 [license]: LICENSE.md
 [contributing]: CONTRIBUTING.md
