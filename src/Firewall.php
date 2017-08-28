@@ -119,7 +119,8 @@ final class Firewall
     {
         $result = [];
         foreach ($protection as $protectionName => $config) {
-            if ($this->active) {
+            $is_active = isset($config['active']) ? boolval($config['active']) : true;
+            if ($is_active) {
                 $rules = $this->getRules($config, $protectionName);
                 $class = 'karster\security\protection\\' . ucfirst($protectionName);
                 $result[$protectionName] = new $class($rules);
