@@ -33,7 +33,7 @@ class FirewallTest extends TestCase
 
         $this->assertNotEmpty($result);
         $this->assertArrayHasKey('urlLength', $result);
-        $this->assertArrayHasKey('allowedRequestMethod', $result);
+        $this->assertArrayNotHasKey('allowedRequestMethod', $result);
         $this->assertInstanceOf('karster\security\protection\UrlLength', $result['urlLength']);
     }
 
