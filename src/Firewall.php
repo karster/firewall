@@ -49,11 +49,11 @@ final class Firewall
     public function __construct($config = [])
     {
         if (isset($config['allowAttackCount'])) {
-            $this->allowAttackCount = intval($config['allowAttackCount']);
+            $this->allowAttackCount = (int) $config['allowAttackCount'];
         }
 
         if (isset($config['active'])) {
-            $this->active = boolval($config['active']);
+            $this->active = (bool) $config['active'];
         }
 
         if (isset($config['logDirectory'])) {
@@ -71,7 +71,7 @@ final class Firewall
      */
     public function setAllowAttackCount($attack_count)
     {
-        $this->allowAttackCount = intval($attack_count);
+        $this->allowAttackCount = (int) $attack_count;
 
         return $this;
     }
@@ -82,7 +82,7 @@ final class Firewall
      */
     public function setActive($active)
     {
-        $this->active = boolval($active);
+        $this->active = (bool) $active;
 
         return $this;
     }
@@ -119,8 +119,7 @@ final class Firewall
     {
         $result = [];
         foreach ($protection as $protectionName => $config) {
-            $is_active = isset($config['active']) ? boolval($config['active']) : true;
-            if ($is_active) {
+            if ($this->isProtectionActive($config)) {
                 $rules = $this->getRules($config, $protectionName);
                 $class = 'karster\security\protection\\' . ucfirst($protectionName);
                 $result[$protectionName] = new $class($rules);
@@ -128,6 +127,11 @@ final class Firewall
         }
 
         return $result;
+    }
+
+    private function isProtectionActive($config)
+    {
+        return isset($config['active']) ? (bool) $config['active'] : true;
     }
 
     /**
