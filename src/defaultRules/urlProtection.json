@@ -84,7 +84,7 @@
   "phpadmin",
   "\\/?perl\\s*",
   "phpbb_root_path",
-  "*\\/phpbb_root_path\\/*",
+  "\\/phpbb_root_path\\/*",
   "p0hh",
   "ping\\s*",
   "\\.pl",
@@ -131,7 +131,7 @@
   "\\/?usr\\/x11r6\\/bin\\/xterm",
   "\\/?home\\/(ftp|www)",
   "\\/?servlet\\/con",
-  "?>",
+  "\\?>",
   "\\+?\\s*from\\s*\\+?",
   "\\+?\\s*insert\\s*\\+?",
   "\\+?\\s*into\\s*\\+?",
@@ -140,6 +140,6 @@
   "\\+?\\s*union\\s*\\+?",
   "\\+?\\s*where\\s*\\+?",
   "\\+?\\s*update\\s*\\+?",
-  "not123exists*",
+  "not123exists",
   "radminsuper"
 ]

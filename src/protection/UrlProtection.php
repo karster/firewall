@@ -31,7 +31,7 @@ class UrlProtection extends Protection implements ProtectionInterface
 
         if (!empty($query_string) && !empty($rules)) {
             foreach ($rules as $rule) {
-                if (preg_match("/$rule/", rawurldecode($query_string))) {
+                if (preg_match("#$rule#", rawurldecode($query_string))) {
                     $runProtection = true;
                     break;
                 }
