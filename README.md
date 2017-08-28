@@ -11,13 +11,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```shell
-composer require karster/firewall:"*"
+composer require karster/firewall:"dev-master"
 ```
 
 or add
 
 ```
-"karster/firewall": "*"
+"karster/firewall": "dev-master"
 ```
 
 to the require section of your composer.json.
