@@ -16,6 +16,10 @@ class VariableProtection extends Protection
                         break;
                     }
                 }
+
+                if ($runProtection) {
+                    break;
+                }
             }
         }
 
