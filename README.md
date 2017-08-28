@@ -108,6 +108,11 @@ $firewall->setAllowAttackCount(5)
 
 ```
 
+* logDirectory - `string` - path to directory where firewall can writes
+* allowAttackCount - `integer` - attack count from same IP address before blacklisting (**logDirectory** is required)
+* active - `boolean` - default `true` 
+* protection - `array` - associative array of protections where key is protection name and value is protection configuration
+
 ## Protections
 We can chose different types of protection:
 * allowedRequestMethod
@@ -138,8 +143,6 @@ Every protection contains configuration array with parameters:
 ```
 
 If isn't set `rules` or `rulesFile` use default rules.
-
-Every rule can be as regular expression.
 
 ## Tests
 
