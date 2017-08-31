@@ -9,15 +9,9 @@ class VariableProtection extends Protection
         $runProtection = false;
         $rules = $this->getRules();
         if (!empty($variable) && !empty($rules)) {
-            foreach ($variable as &$value) {
-                foreach ($rules as $rule) {
-                    if (preg_match("#$rule#", $value)) {
-                        $runProtection = true;
-                        break;
-                    }
-                }
-
-                if ($runProtection) {
+            foreach ($rules as $rule) {
+                if (preg_grep("#$rule#", $variable)) {
+                    $runProtection = true;
                     break;
                 }
             }
