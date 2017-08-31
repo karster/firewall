@@ -1,7 +1,8 @@
 {
     "name": "karster/security",
     "require": {
-        "longman/ip-tools": "~1.1.0"
+        "longman/ip-tools": "~1.1.0",
+        "monolog/monolog": "~1.23.0"
     },
     "require-dev": {
         "symfony/var-dumper": "*",

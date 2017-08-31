@@ -278,14 +278,12 @@ final class Firewall
 
     private function getMessage()
     {
-        $variables = [
+        return strtr($this->messageTemplate, [
             '{IP}' => $this->getIp(),
             '{USER_AGENT}' => $this->getUserAgent(),
             '{DNS}' => gethostbyaddr($this->getIp()),
             '{REFERER}' => $this->getReferer()
-        ];
-
-        return str_replace(array_keys($variables), array_values($variables), $this->messageTemplate);
+        ]);
     }
 
     /**
@@ -299,7 +297,7 @@ final class Firewall
             }
 
             $message = $this->createMessage($protection_name) . "\n";
-            file_put_contents($this->logDirectory . '/' . $protection_name . ".txt", $message, FILE_APPEND);
+            file_put_contents($this->logDirectory . '/' . $protection_name . ".log", $message, FILE_APPEND);
         }
     }
 

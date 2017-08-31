@@ -40,6 +40,10 @@ class Protection
         return $this;
     }
 
+    /**
+     * @param string $file
+     * @return mixed
+     */
     protected function loadRulesFromFile($file)
     {
         return json_decode(file_get_contents($file), true);
