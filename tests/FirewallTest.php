@@ -25,7 +25,7 @@ class FirewallTest extends TestCase
             ],
             'urlLength' => [
                 'active' => true,
-                'rules' => 200
+                'rules' => [200]
             ]
         ];
 
@@ -50,7 +50,7 @@ class FirewallTest extends TestCase
     public function testLoadDefaultRules()
     {
         $result = $this->invokeMethod($this->firewall, 'loadRulesFromFile', [__DIR__ . '/../src/defaultRules/urlLength.json']);
-        $this->assertSame(300, $result);
+        $this->assertTrue(is_array($result));
 
         $result = $this->invokeMethod($this->firewall, 'loadRulesFromFile', ['foo']);
         $this->assertEmpty($result);

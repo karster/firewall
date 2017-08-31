@@ -8,12 +8,10 @@ class AllowedRequestMethod extends Protection implements ProtectionInterface
      * @param array $rules
      * @return $this
      */
-    public function setRules($rules)
+    public function setRules(array $rules)
     {
-        if (!empty($rules) && is_array($rules)) {
-            foreach ($rules as $rule) {
-                $this->rules[] = strtoupper($rule);
-            }
+        foreach ($rules as $rule) {
+            $this->rules[] = strtoupper($rule);
         }
 
         return $this;

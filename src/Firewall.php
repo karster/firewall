@@ -2,6 +2,7 @@
 
 namespace karster\security;
 
+
 use karster\security\protection\BlacklistIp;
 use karster\security\protection\Protection;
 
@@ -49,11 +50,11 @@ final class Firewall
     public function __construct($config = [])
     {
         if (isset($config['allowAttackCount'])) {
-            $this->allowAttackCount = (int) $config['allowAttackCount'];
+            $this->allowAttackCount = (int)$config['allowAttackCount'];
         }
 
         if (isset($config['active'])) {
-            $this->active = (bool) $config['active'];
+            $this->active = (bool)$config['active'];
         }
 
         if (isset($config['logDirectory'])) {
@@ -71,7 +72,7 @@ final class Firewall
      */
     public function setAllowAttackCount($attack_count)
     {
-        $this->allowAttackCount = (int) $attack_count;
+        $this->allowAttackCount = (int)$attack_count;
 
         return $this;
     }
@@ -82,7 +83,7 @@ final class Firewall
      */
     public function setActive($active)
     {
-        $this->active = (bool) $active;
+        $this->active = (bool)$active;
 
         return $this;
     }
@@ -131,7 +132,7 @@ final class Firewall
 
     private function isProtectionActive($config)
     {
-        return isset($config['active']) ? (bool) $config['active'] : true;
+        return isset($config['active']) ? (bool)$config['active'] : true;
     }
 
     /**
