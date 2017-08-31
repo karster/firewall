@@ -55,7 +55,7 @@ trait GlobalVariableTrait
      */
     public function getIp()
     {
-        $indices = ['HTTP_X_FORWARDED_FOR', 'HTTP_CLIENT_IP', 'REMOTE_ADDR'];
+        $indices = ['REMOTE_ADDR', 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR'];
 
         foreach ($indices as $index) {
             $ip = $this->getGlobalVariable($index);

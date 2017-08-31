@@ -2,7 +2,6 @@
 
 namespace karster\security;
 
-
 use karster\security\protection\BlacklistIp;
 use karster\security\protection\Protection;
 

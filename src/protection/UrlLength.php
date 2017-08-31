@@ -8,13 +8,9 @@ class UrlLength extends Protection implements ProtectionInterface
      * @param integer $rules
      * @return $this
      */
-    public function setRules(array $rules)
+    public function setRules($rules)
     {
-        if (empty($rules[0])) {
-            throw new \LogicException("UrlLength Rules muse be one element array example: [300]");
-        }
-
-        $this->rules = (int)($rules[0]);
+        $this->rules = (int) $rules;
 
         return $this;
     }

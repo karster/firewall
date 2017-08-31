@@ -2,8 +2,6 @@
 
 namespace karster\security\protection;
 
-
-
 interface ProtectionInterface
 {
     /**
@@ -17,5 +15,5 @@ interface ProtectionInterface
      * @param $rules mixed
      * @return $this
      */
-    public function setRules(array $rules);
+    public function setRules($rules);
 }

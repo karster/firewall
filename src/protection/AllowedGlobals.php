@@ -2,17 +2,15 @@
 
 namespace karster\security\protection;
 
-
-
 class AllowedGlobals extends Protection implements ProtectionInterface
 {
     /**
      * @param array $rules
      * @return $this
      */
-    public function setRules(array $rules)
+    public function setRules($rules)
     {
-        if (false === empty($rules)) {
+        if (!empty($rules)) {
             $rules = array_merge($rules, ['GLOBALS']);
             foreach ($rules as $rule) {
                 $this->rules[] = strtoupper($rule);

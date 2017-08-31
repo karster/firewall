@@ -33,7 +33,7 @@ class Protection
      * @param $rules
      * @return $this
      */
-    public function setRules(array $rules)
+    public function setRules($rules)
     {
         $this->rules = $rules;
 

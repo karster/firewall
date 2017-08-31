@@ -8,10 +8,12 @@ class UrlProtection extends Protection implements ProtectionInterface
      * @param array $rules
      * @return $this
      */
-    public function setRules(array $rules)
+    public function setRules($rules)
     {
-        foreach ($rules as $rule) {
-            $this->rules[] = strtolower($rule);
+        if (!empty($rules)) {
+            foreach ($rules as $rule) {
+                $this->rules[] = strtolower($rule);
+            }
         }
 
         return $this;

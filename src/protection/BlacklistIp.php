@@ -2,7 +2,6 @@
 
 namespace karster\security\protection;
 
-
 use Longman\IPTools\Ip;
 
 class BlacklistIp extends Protection implements ProtectionInterface
