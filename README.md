@@ -53,11 +53,11 @@ $config = [
         ],
         'whitelistIp' => [
             'active' => true,
-            'rules' => ['127.0.0.2', '127.0.0.3']
+            'rules' => ['127.0.0.1', '::1']
         ],
         'blacklistIp' => [
             'active' => true,
-            'rules' => ['127.0.0.1', '::1']
+            'rules' => ['23.254.0.1', '22.23.22.8']
         ]
     ]
 ];
