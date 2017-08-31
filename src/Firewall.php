@@ -35,6 +35,11 @@ final class Firewall
     private $logDirectory;
 
     /**
+     * @var int
+     */
+    private $logFilesCount = 0;
+
+    /**
      * @var bool
      */
     private $active = true;
@@ -270,7 +275,7 @@ final class Firewall
                 </head>
                 <body style="background-color:#D64541">
                     <h1 style="width:80%;margin:80px auto;color:#fff;text-align:center;">
-                        ' . $this->getMessage() . '
+                        ' . $this->getAlertMessage() . '
                     </h1>
                 </body>
             </html>';
@@ -281,7 +286,7 @@ final class Firewall
     /**
      * @return string
      */
-    private function getMessage()
+    private function getAlertMessage()
     {
         return strtr($this->messageTemplate, [
             '{IP}' => $this->getIp(),
@@ -292,14 +297,13 @@ final class Firewall
     }
 
     /**
-     * @param $protection_name
+     * @param string $protection_name
      */
     private function createLog($protection_name)
     {
         if (!empty($this->logDirectory)) {
             $log = new Logger('firewall');
-            $log->pushHandler(new RotatingFileHandler($this->logDirectory . '/firewall.log', 10, Logger::ERROR));
-
+            $log->pushHandler(new RotatingFileHandler($this->logDirectory . '/firewall.log', $this->logFilesCount, Logger::ERROR));
             $log->error($protection_name, $this->getLogContext());
         }
     }

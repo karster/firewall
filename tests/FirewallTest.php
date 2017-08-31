@@ -50,16 +50,9 @@ class FirewallTest extends TestCase
     public function testLoadDefaultRules()
     {
         $result = $this->invokeMethod($this->firewall, 'loadRulesFromFile', [__DIR__ . '/../src/defaultRules/urlLength.json']);
-        $this->assertTrue(is_array($result));
+        $this->assertSame(300, $result);
 
         $result = $this->invokeMethod($this->firewall, 'loadRulesFromFile', ['foo']);
         $this->assertEmpty($result);
-    }
-
-    public function testRun()
-    {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
     }
 }
