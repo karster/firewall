@@ -2,7 +2,7 @@
 
 namespace karster\security\protection;
 
-class AllowedGlobals extends Protection implements ProtectionInterface
+class AllowedGlobals extends Protection
 {
     /**
      * @param array $rules

@@ -2,7 +2,7 @@
 
 namespace karster\security\protection;
 
-class GetProtection extends VariableProtection implements ProtectionInterface
+class GetProtection extends VariableProtection
 {
     public function protect()
     {

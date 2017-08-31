@@ -2,7 +2,7 @@
 
 namespace karster\security\protection;
 
-class UrlProtection extends Protection implements ProtectionInterface
+class UrlProtection extends Protection
 {
     /**
      * @param array $rules

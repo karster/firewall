@@ -2,7 +2,7 @@
 
 namespace karster\security\protection;
 
-class UrlLength extends Protection implements ProtectionInterface
+class UrlLength extends Protection
 {
     /**
      * @param integer $rules

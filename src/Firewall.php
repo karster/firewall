@@ -56,24 +56,28 @@ final class Firewall
     public function __construct($config = [])
     {
         if (isset($config['allowAttackCount'])) {
-            $this->allowAttackCount = (int)$config['allowAttackCount'];
+            $this->setAllowAttackCount($config['allowAttackCount']);
         }
 
         if (isset($config['active'])) {
-            $this->active = (bool)$config['active'];
+            $this->setActive($config['active']);
         }
 
         if (isset($config['logDirectory'])) {
-            $this->logDirectory = $config['logDirectory'];
+            $this->setLogDirectory($config['logDirectory']);
         }
 
-        if (isset($config['protection']) && $this->active) {
-            $this->protection = $this->createProtectionConfig($config['protection']);
+        if (isset($config['logFilesCount'])) {
+            $this->setLogFilesCount($config['logFilesCount']);
+        }
+
+        if (isset($config['protection'])) {
+            $this->setProtection($config['protection']);
         }
     }
 
     /**
-     * @param $attack_count
+     * @param integer $attack_count
      * @return $this
      */
     public function setAllowAttackCount($attack_count)
@@ -84,7 +88,7 @@ final class Firewall
     }
 
     /**
-     * @param $active
+     * @param bool $active
      * @return $this
      */
     public function setActive($active)
@@ -95,12 +99,23 @@ final class Firewall
     }
 
     /**
-     * @param $directory
+     * @param string $directory
      * @return $this
      */
     public function setLogDirectory($directory)
     {
         $this->logDirectory = $directory;
+
+        return $this;
+    }
+
+    /**
+     * @param integer $max_files
+     * @return $this
+     */
+    public function setLogFilesCount($max_files)
+    {
+        $this->logFilesCount = (int) $max_files;
 
         return $this;
     }

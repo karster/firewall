@@ -2,7 +2,7 @@
 
 namespace karster\security\protection;
 
-class SessionProtection extends VariableProtection implements ProtectionInterface
+class SessionProtection extends VariableProtection
 {
     public function protect()
     {

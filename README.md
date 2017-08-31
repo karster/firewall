@@ -30,6 +30,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 $config = [
     'logDirectory' => __DIR__ . "/firewall_logs",
+    'logFilesCount' => 10,
     'allowAttackCount' => 5,
     'active' => true,
     'protection' => [
@@ -105,13 +106,15 @@ $firewall = new \karster\security\Firewall();
 $firewall->setAllowAttackCount(5)
          ->setActive(true)
          ->setLogDirectory(__DIR__ . "/firewall_logs")
+         ->setLogFilesCount(10)
          ->setProtection($protections)
          ->run();
 
 ```
 
 * logDirectory - `string` - path to directory where firewall can writes
-* allowAttackCount - `integer` - attack count from same IP address before blacklisting (**logDirectory** is required)
+* logFilesCount - `integer` - delete older logs than specific count. Set `0` to disable
+* allowAttackCount - `integer` - attack count from same IP address before blacklisting (**logDirectory** is required). Set `0` to disable
 * active - `boolean` - default `true` 
 * protection - `array` - associative array of protections where key is protection name and value is protection configuration
 

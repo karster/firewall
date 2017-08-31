@@ -2,7 +2,7 @@
 
 namespace karster\security\protection;
 
-class AllowedRequestMethod extends Protection implements ProtectionInterface
+class AllowedRequestMethod extends Protection
 {
     /**
      * @param array $rules

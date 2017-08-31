@@ -4,7 +4,7 @@ namespace karster\security\protection;
 
 use Longman\IPTools\Ip;
 
-class WhitelistIp extends Protection implements ProtectionInterface
+class WhitelistIp extends Protection
 {
     public function protect()
     {

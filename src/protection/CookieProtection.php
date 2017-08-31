@@ -2,7 +2,7 @@
 
 namespace karster\security\protection;
 
-class CookieProtection extends VariableProtection implements ProtectionInterface
+class CookieProtection extends VariableProtection
 {
     public function protect()
     {

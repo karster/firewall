@@ -4,7 +4,7 @@ namespace karster\security\protection;
 
 use karster\security\GlobalVariableTrait;
 
-class Protection
+abstract class Protection
 {
     use GlobalVariableTrait;
     /**
@@ -48,4 +48,10 @@ class Protection
     {
         return json_decode(file_get_contents($file), true);
     }
+
+    /**
+     * @access public
+     * @return bool
+     */
+    abstract public function protect();
 }
