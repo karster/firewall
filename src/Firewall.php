@@ -4,6 +4,8 @@ namespace karster\security;
 
 use karster\security\protection\BlacklistIp;
 use karster\security\protection\Protection;
+use Monolog\Logger;
+use Monolog\Handler\RotatingFileHandler;
 
 final class Firewall
 {
@@ -276,6 +278,9 @@ final class Firewall
         exit();
     }
 
+    /**
+     * @return string
+     */
     private function getMessage()
     {
         return strtr($this->messageTemplate, [
@@ -292,31 +297,24 @@ final class Firewall
     private function createLog($protection_name)
     {
         if (!empty($this->logDirectory)) {
-            if (!file_exists($this->logDirectory)) {
-                mkdir($this->logDirectory, static::LOG_DIRECTORY_MODE, true);
-            }
+            $log = new Logger('firewall');
+            $log->pushHandler(new RotatingFileHandler($this->logDirectory . '/firewall.log', 10, Logger::ERROR));
 
-            $message = $this->createMessage($protection_name) . "\n";
-            file_put_contents($this->logDirectory . '/' . $protection_name . ".log", $message, FILE_APPEND);
+            $log->error($protection_name, $this->getLogContext());
         }
     }
 
     /**
-     * @param $protection_name
-     * @return string
+     * @return array
      */
-    private function createMessage($protection_name)
+    private function getLogContext()
     {
-        $message = [
-            date('j-m-Y H:i:s'),
-            $protection_name,
+        return [
             "IP: " . $this->getIp(),
             "DNS: " . gethostbyaddr($this->getIp()),
             "User Agent: " . $this->getUserAgent(),
             "URL: " . $this->getRequestUri(),
             "Referer: " . $this->getReferer()
         ];
-
-        return implode(' | ', $message);
     }
 }
