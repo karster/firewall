@@ -1,5 +1,5 @@
 {
-    "name": "karster/security",
+    "name": "karster/firewall",
     "require": {
         "longman/ip-tools": "~1.1.0",
         "monolog/monolog": "~1.23.0"
